@@ -3,11 +3,9 @@ const express = require('express');
 const upload = require('../models/multerHelper');
 const { multipleFileUpload, getallMultipleFiles} = require('../controllers/uploadFile');
 const router = express.Router();
+const path=require("path")
+router.post('/',express.static( path.join(__dirname, "images")), upload.array('files'), multipleFileUpload);
+router.get('/', getallMultipleFiles);
 
-router.post('/multipleFiles', upload.array('images'), multipleFileUpload);
-router.get('/getMultipleFiles', getallMultipleFiles);
 
-
-module.exports = {
-    routes: router
-}
+module.exports =router

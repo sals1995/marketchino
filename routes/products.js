@@ -9,7 +9,7 @@ const productsControllers=require("../controllers/products")
 const path =require("path")
 const upload=require("../models/multerHelper")
 
-router.post('/add'/* ,express.static( path.join(__dirname, "pictures")),upload.array('images') */,productsControllers.create)
+router.post('/add',express.static( path.join(__dirname, "images")),upload.array('files'),productsControllers.create)
 router.get('/', productsControllers.all)
 router.put('/:id', productsControllers.update)
 router.delete('/:id', productsControllers.deleteById)

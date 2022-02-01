@@ -12,7 +12,7 @@ const fileSizeFormatter = (bytes, decimal) => {
 }
 exports.create = (req, res) => {
     console.log(req.body)
-    /* 
+    
     const filesPath = [];
     const filesArray = [];
     req.files.forEach(element => {
@@ -29,17 +29,20 @@ exports.create = (req, res) => {
         files: filesArray
     });
     multipleFiles.save();
-     */
+    
     var newProduct = new ProductCollection({
         name: req.body.name,
+        nameAr: req.body.nameAr,
         description: req.body.description,
+        descriptionAr: req.body.descriptionAr,
         additionalDes: req.body.additionalDes,
+        additionalDesAr: req.body.additionalDesAr,
         price: req.body.price,
         countInStock: req.body.countInStock,
         category: req.body.category,
         subCategories: req.body.subCategories,
         rating: req.body.rating,
-        // imagePath: filesPath,
+        images: filesPath,
     })
 
     newProduct.save().then(data => {
@@ -57,21 +60,13 @@ exports.all = (req, res) => {
         if (err) return next(err.message);
         res.send(data)
     }).limit(limit).skip(skip)
-    //or
-    // .select('title -_id')
 }
 
 exports.update = (req, res) => {
-    ProductCollection.findByIdAndUpdate(req.params.id, {
-        title: req.body.title,
-        author: req.body.author,
-        body: req.body.body,
-        //to add a value to comments array //"comments":["extra"]
-        $push: { comments: req.body.comments }
-    }, { new: true }, (err, data) => {
+    ProductCollection.findByIdAndUpdate(req.params.id, req.body, { new: true }, (err, data) => {
         // console.log(data);
-        res.send(data)
         if (err) res.send(err)
+        res.send(["Product has been updated...",data])
     })
 }
 
@@ -79,6 +74,6 @@ exports.deleteById = (req, res) => {
     ProductCollection.findOneAndDelete(req.params.id, (err, data) => {
         if (!data) res.send("can't find id " + req.params.id)
         if (err) res.send(err)
-        res.send(["remove", data])
+        res.send(["Product has been deleted...", data])
     })
 }
