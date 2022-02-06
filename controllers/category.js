@@ -40,7 +40,7 @@ exports.create = (req, res) => {
 }
 
 exports.all = (req, res) => {
-    let limit = +req.query.limit || 5;
+    let limit = +req.query.limit || 0;
     let skip = +req.query.skip || 0;
     
     categoryCollection.find({}, (err, data) => {
