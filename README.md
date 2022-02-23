@@ -48,7 +48,7 @@ fields:{
 * / (get first 5 products)
     
 * /?limit=5&skip=2 (limit / skip return results)
-
+*  /categoryName/?sub=subCategoryName &limit=5 &skip=2 (get products by category and *subCategory Name if needed* with limit / skip option)
 ### Post:
 * /add
 

@@ -11,6 +11,7 @@ const upload=require("../models/multerHelper")
 
 router.post('/add',express.static( path.join(__dirname, "images")),upload.array('files'),productsControllers.create)
 router.get('/', productsControllers.all)
+router.get('/:category', productsControllers.byCategory)
 router.put('/:id', productsControllers.update)
 router.delete('/:id', productsControllers.deleteById)
 

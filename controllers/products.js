@@ -12,7 +12,7 @@ const fileSizeFormatter = (bytes, decimal) => {
 }
 exports.create = (req, res) => {
     console.log(req.body)
-    
+
     const filesPath = [];
     const filesArray = [];
     req.files.forEach(element => {
@@ -29,7 +29,7 @@ exports.create = (req, res) => {
         files: filesArray
     });
     multipleFiles.save();
-    
+
     var newProduct = new ProductCollection({
         name: req.body.name,
         nameAr: req.body.nameAr,
@@ -55,18 +55,18 @@ exports.create = (req, res) => {
 exports.all = (req, res) => {
     let limit = +req.query.limit || 5;
     let skip = +req.query.skip || 0;
-    
+
     ProductCollection.find({}, (err, data) => {
-        if (err) return next(err.message);
+        if (err) res.send(err)
         res.send(data)
     }).limit(limit).skip(skip)
-}
 
+}
 exports.update = (req, res) => {
     ProductCollection.findByIdAndUpdate(req.params.id, req.body, { new: true }, (err, data) => {
         // console.log(data);
         if (err) res.send(err)
-        res.send(["Product has been updated...",data])
+        res.send(["Product has been updated...", data])
     })
 }
 
@@ -76,4 +76,19 @@ exports.deleteById = (req, res) => {
         if (err) res.send(err)
         res.send(["Product has been deleted...", data])
     })
+}
+
+exports.byCategory = (req, res) => {
+    let query = {}
+    query.limit = +req.query.limit || 5;
+    query.skip = +req.query.skip || 0;
+    query.category = req.params.category
+    query.subCategories = req.query.sub 
+    console.log(query.subCategories);
+    ProductCollection.find({ 
+        category: query.category,
+         ...query.subCategories ? { subCategories: query.subCategories} :{} }, (err, data) => {
+        if (err) res.send(err)
+        res.send(data)
+    }).limit(query.limit).skip(query.skip)
 }
